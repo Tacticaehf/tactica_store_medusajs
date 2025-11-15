@@ -29,7 +29,7 @@ modules: [
             id: "caching-redis",
             is_default: true,
             options: {
-              redisUrl: process.env.CACHE_REDIS_URL,
+              redisUrl: process.env.REDIS_URL,
             },
           },
         ],
@@ -58,7 +58,7 @@ modules: [
             id: "locking-redis",
             is_default: true,
             options: {
-              redisUrl: process.env.LOCKING_REDIS_URL,
+              redisUrl: process.env.REDIS_URL,
             },
           },
         ],
