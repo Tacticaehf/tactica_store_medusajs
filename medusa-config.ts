@@ -15,11 +15,24 @@ module.exports = defineConfig({
       cookieSecret: process.env.COOKIE_SECRET || "supersecret",
     }
   },
-  modules: [
+  admin: {
+    disable: process.env.DISABLE_MEDUSA_ADMIN === "true",
+    backendUrl: process.env.MEDUSA_BACKEND_URL,
+  },
+modules: [
     {
-      resolve: "@medusajs/medusa/cache-redis",
+      resolve: "@medusajs/medusa/caching",
       options: {
-        redisUrl: process.env.REDIS_URL,
+        providers: [
+          {
+            resolve: "@medusajs/caching-redis",
+            id: "caching-redis",
+            is_default: true,
+            options: {
+              redisUrl: process.env.CACHE_REDIS_URL,
+            },
+          },
+        ],
       },
     },
     {
@@ -36,5 +49,21 @@ module.exports = defineConfig({
         },
       },
     },
-  ],
+    {
+      resolve: "@medusajs/medusa/locking",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/locking-redis",
+            id: "locking-redis",
+            is_default: true,
+            options: {
+              redisUrl: process.env.LOCKING_REDIS_URL,
+            },
+          },
+        ],
+      },
+    },
+
+  ]
 })
